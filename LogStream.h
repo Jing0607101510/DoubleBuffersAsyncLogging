@@ -4,7 +4,7 @@
 #include <string>
 #include <functional>
 
-#include "StreamBuffer.h"
+#include "Buffer.h"
 
 const int k_stream_buffer_size =  1024 * 16;    // const全局变量的链接性是内部的
 const int k_num_max_bit_count = 32;
@@ -37,10 +37,10 @@ class LogStream {
         void Flush();
 
     private:
-        typedef StreamBuffer<k_stream_buffer_size> Buffer;
+        typedef Buffer<k_stream_buffer_size> StreamBuffer;
         
         FlushFunc flush_func_;
-        Buffer buffer_;
+        StreamBuffer buffer_;
 };
 
 #endif

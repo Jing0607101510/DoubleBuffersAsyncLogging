@@ -1,12 +1,12 @@
-#ifndef __STREAM_BUFFER_H__
-#define __STREAM_BUFFER_H__
+#ifndef __BUFFER_H__
+#define __BUFFER_H__
 
 #include <string.h>
 
 template<int buffer_size>
-class StreamBuffer {
+class Buffer {
     public:
-        StreamBuffer() : offset_(0) {}
+        Buffer() : offset_(0) {}
 
         void Append(const char* content, int len) {
             int aval = Avail();

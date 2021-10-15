@@ -11,6 +11,12 @@ Logger::Logger(Logger::LogLevel log_level, Logger::OutputFunc output_func) {
     SetOutputFunc(output_func);
 }
 
+void Logger::Init(Logger::LogLevel log_level, Logger::OutputFunc output_func) {
+    min_log_level_ = log_level;
+    SetOutputFunc(output_func);
+}
+
+
 void Logger::SetLogLevel(Logger::LogLevel log_level) {
     min_log_level_ = log_level;
 }

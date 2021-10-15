@@ -46,7 +46,7 @@ class Logger {
 
     public:
         Logger(Logger::LogLevel log_level=Logger::LogLevel::INFO, Logger::OutputFunc output_func=nullptr);
-
+        void Init(Logger::LogLevel log_level=Logger::LogLevel::INFO, Logger::OutputFunc output_func=nullptr);
         void SetLogLevel(LogLevel log_level);
         Logger::LogLevel GetLogLevel();
         

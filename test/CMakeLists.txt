@@ -6,4 +6,4 @@ aux_source_directory(. src)
 
 add_executable(${PROJECT_NAME} ${src})
 
-target_link_libraries(${PROJECT_NAME} async_logging)
+target_link_libraries(${PROJECT_NAME} pthread async_logging)
