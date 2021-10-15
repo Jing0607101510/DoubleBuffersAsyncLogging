@@ -6,7 +6,7 @@
 template<int buffer_size>
 class StreamBuffer {
     public:
-        StreamBuffer() : offset_(0);
+        StreamBuffer() : offset_(0) {}
 
         void Append(const char* content, int len) {
             int aval = Avail();
@@ -30,6 +30,14 @@ class StreamBuffer {
 
         void AddOffset(int n) {
             offset_ += n;
+        }
+
+        char* Data() {
+            return buffer_;
+        }
+
+        int DataLen() {
+            return offset_;
         }
 
     private:

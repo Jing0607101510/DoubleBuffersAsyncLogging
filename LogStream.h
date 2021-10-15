@@ -2,6 +2,7 @@
 #define __LOG_STREAM_H__
 
 #include <string>
+#include <functional>
 
 #include "StreamBuffer.h"
 
@@ -10,6 +11,8 @@ const int k_num_max_bit_count = 32;
 
 class LogStream {
     public:
+        typedef std::function<void(const char*, int)> FlushFunc;
+
         LogStream& operator<<(bool);
         LogStream& operator<<(char);
         LogStream& operator<<(const char*);
@@ -26,13 +29,17 @@ class LogStream {
         LogStream& operator<<(float);
         LogStream& operator<<(double);
         LogStream& operator<<(long double);
+        LogStream& operator<<(LogStream& (*__pf)(LogStream&));
 
         void Append(const char* content, int len);
         void ResetBuffer();
+        void SetFlushFunc(FlushFunc flush_func);
+        void Flush();
 
     private:
         typedef StreamBuffer<k_stream_buffer_size> Buffer;
         
+        FlushFunc flush_func_;
         Buffer buffer_;
 };
 

@@ -6,21 +6,21 @@
 #include "Singleton.h"
 #include "LogStream.h"
 
-#define LOG_TRACE Singleton<Logger>::GetInstance() \
-    .GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::TRACE)
-#define LOG_DEBUG Singleton<Logger>::GetInstance() \
-    .GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::DEBUG)
-#define LOG_INFO Singleton<Logger>::GetInstance() \
-    .GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::INFO)
-#define LOG_WARN Singleton<Logger>::GetInstance() \
-    .GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::WARN)
-#define LOG_ERROR Singleton<Logger>::GetInstance() \
-    .GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::ERROR)
-#define LOG_FATAL Singleton<Logger>::GetInstance() \
-    .GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::FATAL)
+#define LOG_TRACE if (Singleton<Logger>::GetInstance().GetLogLevel() <= Logger::LogLevel::TRACE) \
+    Singleton<Logger>::GetInstance().GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::TRACE)
+#define LOG_DEBUG if (Singleton<Logger>::GetInstance().GetLogLevel() <= Logger::LogLevel::DEBUG) \
+    Singleton<Logger>::GetInstance().GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::DEBUG)
+#define LOG_INFO  if (Singleton<Logger>::GetInstance().GetLogLevel() <= Logger::LogLevel::INFO) \
+    Singleton<Logger>::GetInstance().GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::INFO)
+#define LOG_WARN  if (Singleton<Logger>::GetInstance().GetLogLevel() <= Logger::LogLevel::WARN) \
+    Singleton<Logger>::GetInstance().GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::WARN)
+#define LOG_ERROR if (Singleton<Logger>::GetInstance().GetLogLevel() <= Logger::LogLevel::ERROR) \
+    Singleton<Logger>::GetInstance().GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::ERROR)
+#define LOG_FATAL if (Singleton<Logger>::GetInstance().GetLogLevel() <= Logger::LogLevel::FATAL) \
+    Singleton<Logger>::GetInstance().GetLogStream(__FILE__, __LINE__, __func__, Logger::LogLevel::FATAL)
 
 
-const char* LogLevelName[6] = 
+static const char* LogLevelName[6] = 
 {
   "TRACE ",
   "DEBUG ",
@@ -30,7 +30,7 @@ const char* LogLevelName[6] =
   "FATAL ",
 };
 
-
+ 
 class Logger {
     public:
         enum LogLevel {
@@ -52,6 +52,8 @@ class Logger {
         
         void SetOutputFunc(OutputFunc output_func);
         LogStream& GetLogStream(const char* file, int line, const char* func, Logger::LogLevel log_level);
+
+        static LogStream& Endl(LogStream& log_stream);
 
     private:
         LogLevel min_log_level_;

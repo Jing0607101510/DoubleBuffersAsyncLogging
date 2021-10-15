@@ -101,10 +101,26 @@ LogStream& LogStream::operator<<(long double val) {
     return *this;
 }
 
+LogStream& LogStream::operator<<(LogStream& (*__pf)(LogStream&)) {
+    return __pf(*this);
+}
+
+
 void LogStream::Append(const char* content, int len) {
     buffer_.Append(content, len);
 }
 
 void LogStream::ResetBuffer() {
     buffer_.Reset();
+}
+
+void LogStream::Flush() {
+    if (flush_func_) {
+        flush_func_(buffer_.Data(), buffer_.DataLen());
+    }
+    ResetBuffer();
+}
+
+void LogStream::SetFlushFunc(LogStream::FlushFunc flush_func) {
+    flush_func_ = flush_func;
 }
